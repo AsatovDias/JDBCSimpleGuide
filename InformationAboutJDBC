@@ -1,0 +1,20 @@
+What is JDBC?
+JDBC is a Java API that allows you to:
+Connect to a database
+Send SQL queries (like SELECT, INSERT, etc.)
+Retrieve results
+Manage database transactions
+
+🧱 JDBC Architecture
+JDBC has two main parts:
+JDBC API – Provided by Java, defines interfaces (like Connection, Statement, ResultSet).
+JDBC Driver – Provided by the database vendor (like MySQL Connector/J), it implements the interfaces.
+
+
+🔑 Key JDBC Interfaces
+Interface	Description
+DriverManager	Manages JDBC drivers and connections
+Connection	Represents a connection to the DB
+Statement	Executes static SQL queries
+PreparedStatement	Executes parameterized SQL queries (safer)
+ResultSet	Holds data retrieved from a SELECT query
