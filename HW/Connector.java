@@ -1,5 +1,6 @@
 package JDBC.MySQLConnection.HW;
 
+import java.awt.desktop.SystemSleepEvent;
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -25,8 +26,8 @@ public class Connector {
                 User user = new User();
                 user.setName(resultSet.getString("name"));
                 user.setSurname(resultSet.getString("surname"));
-                user.setPin_code(resultSet.getInt("pin_code"));
-                user.setUserBalance(resultSet.getInt("user_balance"));
+                user.setPin_code(resultSet.getInt("pincode"));
+                user.setUserBalance(resultSet.getInt("userBalance"));
                 usersList.add(user);
             }
 
@@ -39,16 +40,17 @@ public class Connector {
         User user = new User();
         try{
             PreparedStatement st = connection.prepareStatement("select * from users " +
-                    "where card_number = ?");
+                    "where cardNumber = ?");
             st.setInt(1, cardNumber);
             ResultSet resultSet = st.executeQuery();
             if(resultSet.next()){
                 user.setId(resultSet.getInt("id"));
                 user.setName(resultSet.getString("name"));
                 user.setSurname(resultSet.getString("surname"));
-                user.setPin_code(resultSet.getInt("pin_code"));
-                user.setUserBalance(resultSet.getInt("user_balance"));
+                user.setPin_code(resultSet.getInt("pincode"));
+                user.setUserBalance(resultSet.getInt("userBalance"));
                 user.setCardNumber(cardNumber);
+
             }
         }catch (Exception e){
             e.printStackTrace();
@@ -56,4 +58,42 @@ public class Connector {
         return user;
     }
 
+    public boolean auth(int cardNumber, int pinCode){
+        boolean isAuth = false;
+        try{
+            PreparedStatement st = connection.prepareStatement("SELECT * FROM users WHERE pincode = ? AND cardNumber = ?");
+            st.setInt(1, pinCode);
+            st.setInt(2, cardNumber);
+            ResultSet resultSet = st.executeQuery();
+            if(resultSet.next()){ // обязательно!
+                isAuth = true;
+                System.out.println("Auth success");
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+            isAuth = false;
+        }
+        return isAuth;
+    }
+
+    public int getTotalBalance(int cardNumber,int pincode){
+        int totalBalance = 0;
+        try{
+
+                PreparedStatement st = connection.prepareStatement("select userBalance from users where cardNumber = ? and pincode = ?");
+                st.setInt(1, cardNumber);
+                st.setInt(2, pincode);
+                ResultSet rs = st.executeQuery();
+                if(rs.next()){
+                    totalBalance = rs.getInt("userBalance");
+                }
+
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return totalBalance;
+    }
+
 }
+
